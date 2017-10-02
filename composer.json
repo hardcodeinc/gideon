@@ -1,0 +1,36 @@
+{
+    "name": "gideon/gideon",
+    "description": "A starter pack creator helper.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "juba",
+            "email": "julianobailao@gmail.com"
+        }
+    ],
+    "require": {
+        "macfja/phar-builder": "^0.2.6",
+        "symfony/console": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gideon\\": "Gideon/"
+        }
+    },
+    "extra": {
+        "phar-builder": {
+            "compression": "GZip",
+            "name": "gideon.phar",
+            "output-dir": "./",
+            "entry-point": "./Gideon/index.php",
+            "include-dev": true,
+            "skip-shebang": false,
+            "events": {
+                "command.package.after": [
+                    "chmod +x ../gideon.phar"
+                ]
+            }
+        }
+    }
+}
