@@ -1,20 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Carlos Fiori
- * Date: 03/10/2017
- * Time: 19:18
- */
 
 namespace Gideon\Commands;
 
-
-use Gideon\Core\Command;
+use Gideon\Core\CommandWithConfig;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CloneTemplateCommand extends Command
+class CloneTemplateCommand extends CommandWithConfig
 {
     protected function configure()
     {

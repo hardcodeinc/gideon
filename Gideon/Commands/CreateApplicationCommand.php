@@ -35,7 +35,7 @@ class CreateApplicationCommand extends CommandWithConfig
 
         $installDependenciesArguments = [
             'command'     => 'install-dependencies',
-            'destination' => $destination
+            'destination' => $destination,
         ];
 
         $installDependenciesCommand->run(new ArrayInput($installDependenciesArguments), $output);

@@ -8,15 +8,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 class ConfigurationWizardCommand extends Command
 {
     protected $configuration;
 
     protected function configure()
     {
-        $this
-            ->setName('config')
+        $this->setName('config')
             ->setDescription('Configure Gideon for use.')
             ->addOption(
                 'global',
@@ -24,19 +22,18 @@ class ConfigurationWizardCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'Create the configuration file globally?',
                 false
-            )
-        ;
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('====================================================');
-        $output->writeln(PHP_EOL.'Configuration Wizzard'.PHP_EOL);
+        $output->writeln(PHP_EOL . 'Configuration Wizzard' . PHP_EOL);
         $output->writeln('====================================================');
 
         $urlNormalizer = function ($value) {
             if (strpos('http://', $value) === false) {
-                $value = 'http://'.$value;
+                $value = 'http://' . $value;
             }
 
             return $value;

@@ -9,7 +9,7 @@ class Application extends BaseApplication
 {
     public function __construct()
     {
-        parent::__construct('Gideon', '0.0.1');
+        parent::__construct('Gideon', '0.4.0');
     }
 
     public function getHelp()
