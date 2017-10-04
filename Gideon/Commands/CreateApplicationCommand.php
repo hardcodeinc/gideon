@@ -3,6 +3,7 @@
 namespace Gideon\Commands;
 
 use Gideon\Core\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,14 +13,9 @@ class CreateApplicationCommand extends Command
 {
     protected function configure()
     {
-        $this
-            ->setName('new')
-            ->setDescription('Creates a application using starter package.')
-            ->addArgument(
-                'destination',
-                InputArgument::OPTIONAL,
-                'Project destination folder.'
-            );
+        $this->setName('new')
+             ->setDescription('Creates a application using starter package.')
+             ->addArgument('destination', InputArgument::OPTIONAL, 'Project destination folder.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -27,20 +23,36 @@ class CreateApplicationCommand extends Command
         // destination folder of the application.
         $destination = $input->getArgument('destination') ?: 'gideon';
 
-        // clone the template repository.
-        $output->writeln('Cloning template repository, please wait...');
-        $this->executeExternalCommand(sprintf('git clone https://github.com/julianobailao/laravel-module %s', $destination), $output);
+        $this->cloneTemplate($destination, $output);
 
-        // install dependencies.
-        $afterCloneCommands = [
-            sprintf('cd %s', $destination),
-            'composer install',
-            'mv .env.example .env',
-            'php artisan key:generate',
-            'rm -rf .git',
-            'php artisan inspire',
+        $this->installDependencies($destination, $output);
+    }
+
+    protected function installDependencies($destination, OutputInterface $output)
+    {
+        $installDependenciesCommand = $this->getApplication()
+                                           ->find('install-dependencies');
+
+        $installDependenciesArguments = [
+            'command'     => 'install-dependencies',
+            'destination' => $destination
         ];
-        $output->writeln('Application created, instaling dependencies, please wait...');
-        $this->executeExternalCommand(implode(' && ', $afterCloneCommands), $output);
+
+        $installDependenciesCommand->run(new ArrayInput($installDependenciesArguments), $output);
+    }
+
+    protected function cloneTemplate($destination, OutputInterface $output)
+    {
+        $cloneCommand = $this->getApplication()
+                             ->find('clone');
+
+        $cloneArguments = [
+            'command'     => 'clone',
+            'destination' => $destination
+        ];
+
+        $cloneInput = new ArrayInput($cloneArguments);
+
+        $cloneCommand->run($cloneInput, $output);
     }
 }
